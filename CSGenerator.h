@@ -18,7 +18,7 @@ namespace NCSGenerator
     {
         
     private:
-        unsigned int LoopDelay = 9999;
+        unsigned int LoopDelay = 15000;
         // Current BuildCharSet(int combination) method will work only with a length of 32 elements
         // for char[] characters. However if you change the length, a new algorithm
         // implementation for BuildCharSet(int combination) method is needed.
@@ -28,12 +28,17 @@ namespace NCSGenerator
         CSContainer* CSContainer = new NCSGenerator::CSContainer();
         std::string Dec2bin(unsigned long n);
         int BinToInt(std::string const& s);
+        std::string FilePath = "";
+        const int CharByteStringLength = 5;
+        int NumberOfCodes = 100;
     public:
         CSGenerator();
         ~CSGenerator();
         void SetLoopDelay(unsigned int LoopDelay);
         unsigned int GetLoopDelay();
         void Generate();
+        void SetFilePath(std::string FilePath);
+        void SetNumberOfCodes(int NumberOfCodes);
     };
 }
 #endif /* defined(__CharacterSetsGenerator__CSGenerator__) */

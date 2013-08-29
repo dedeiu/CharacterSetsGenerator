@@ -9,6 +9,7 @@
 #include "CSGenerator.h"
 #include "CSContainer.h"
 #include <sstream>
+#include <fstream>
 
 namespace NCSGenerator
 {
@@ -18,7 +19,6 @@ namespace NCSGenerator
     
     CSGenerator::~CSGenerator()
     {
-        
     }
     
     void CSGenerator::SetLoopDelay(unsigned int LoopDelay)
@@ -34,28 +34,46 @@ namespace NCSGenerator
     void CSGenerator::Generate()
     {
         unsigned long Combination = 0;
+        std::string CharString(8, 'A');
+        std::string ByteString(this->CharByteStringLength * 8, '0');
+        std::string ByteChunk(8, '0');
+        unsigned long CharacterSetIndex = 0;
         
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < this->NumberOfCodes; i++)
         {
-            Combination = Combination + this->GetLoopDelay();
-            std::string ByteString = this->Dec2bin(Combination);
-            std::string CharString = "";
-            
-            for(int i = 0; i < ByteString.size(); i = i + 5)
+            if(i % CSContainer::BUFFER == 0 && i > 0)
             {
-                std::string ByteChunk = ByteString.substr(i,5);
-                unsigned long index = std::bitset<std::numeric_limits<unsigned long>::digits>(ByteChunk).to_ulong();
-                CharString += this->CharacterSet[index];
+                std::ofstream OutputFile(this->FilePath, std::ios::app);
+                std::ostream_iterator<std::string> OutputIterator(OutputFile, "\n");
+                std::vector<std::string> container = this->CSContainer->GetContainer();
+                std::copy(container.begin(), container.end(), OutputIterator);
+                this->CSContainer->Empty();
+            }
+            
+            Combination = Combination + this->GetLoopDelay();
+            ByteString = this->Dec2bin(Combination);
+            CharString = "";
+            
+            for(int i = 0; i < ByteString.size(); i = i + this->CharByteStringLength)
+            {
+                ByteChunk = ByteString.substr(i,this->CharByteStringLength);
+                CharacterSetIndex = std::bitset<std::numeric_limits<unsigned long>::digits>(ByteChunk).to_ulong();
+                CharString += this->CharacterSet[CharacterSetIndex];
             }
             
             this->CSContainer->Add(CharString);
+            
+            if(i % 10000 == 0)
+            {
+                std::cout << i << std::endl;
+            }
         }
     }
     
     std::string CSGenerator::Dec2bin(unsigned long n)
     {
         std::string res;
-        res.reserve(5 * 8);
+        res.reserve(this->CharByteStringLength * 8);
         
         while (n)
         {
@@ -63,7 +81,7 @@ namespace NCSGenerator
             n >>= 1;
         }
 
-        while(res.size() < 5 * 8)
+        while(res.size() < this->CharByteStringLength * 8)
         {
             res.append("0");
         }
@@ -72,4 +90,14 @@ namespace NCSGenerator
         
         return res;
     };
+    
+    void CSGenerator::SetFilePath(std::string FilePath)
+    {
+        this->FilePath = FilePath;
+    }
+    
+    void CSGenerator::SetNumberOfCodes(int NumberOfCodes)
+    {
+        this->NumberOfCodes = NumberOfCodes;
+    }
 }

@@ -21,6 +21,7 @@ namespace NCSGenerator
     public:
         CSContainer();
         void Add(std::string CharacterSet);
+        void Empty();
         std::vector<std::string> GetContainer();
         static const unsigned int BUFFER = 2000;
     };

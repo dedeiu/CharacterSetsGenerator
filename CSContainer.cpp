@@ -30,4 +30,9 @@ namespace NCSGenerator
     {
         return this->_CSContainer;
     }
+    
+    void CSContainer::Empty()
+    {
+        this->_CSContainer.erase(this->_CSContainer.begin(), this->_CSContainer.end());
+    }
 }
