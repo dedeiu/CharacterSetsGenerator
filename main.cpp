@@ -7,29 +7,15 @@
 //
 
 #include <iostream>
-#include "CSContainer.h"
+#include "CSGenerator.h"
 
 int main(int argc, const char * argv[])
 {
-
     try
     {
-        std::string test[5];
-        test[0] = "ABCDEFG0";
-        test[1] = "ABCDEFG1";
-        test[2] = "ABCDEFG2";
-        test[3] = "ABCDEFG3";
-        test[4] = "ABCDEFG4";
-        
-        NCSGenerator::CSContainer* container = new NCSGenerator::CSContainer();
-        
-        for(int i = 0; i < 5; i++)
-        {
-            container->Add(test[i]);
-        }
-        
-        std::vector<std::string> p = container->GetContainer();
-        
+        NCSGenerator::CSGenerator* Generator = new NCSGenerator::CSGenerator();
+        Generator->Generate();
+
     }
     catch (std::exception& e)
     {

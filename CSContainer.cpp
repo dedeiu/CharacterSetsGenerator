@@ -18,7 +18,7 @@ namespace NCSGenerator
     
     void CSContainer::Add(std::string CharacterSet)
     {
-        if(CharacterSet.size() != CSContainer::CHARSETSIZE)
+        if(CharacterSet.size() != 8)
         {
             throw std::runtime_error("Invalid range for provided character set.");
         }

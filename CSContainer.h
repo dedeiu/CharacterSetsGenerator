@@ -23,7 +23,6 @@ namespace NCSGenerator
         void Add(std::string CharacterSet);
         std::vector<std::string> GetContainer();
         static const unsigned int BUFFER = 2000;
-        static const unsigned int CHARSETSIZE = 8;
     };
 }
 #endif /* defined(__CharacterSetsGenerator__CSContainer__) */
