@@ -15,7 +15,7 @@ int main(int argc, const char * argv[])
     {
         NCSGenerator::CSGenerator* Generator = new NCSGenerator::CSGenerator();
         Generator->SetFilePath("/Users/andrei/Desktop/codes.txt");
-        Generator->SetNumberOfCodes(2001);
+        Generator->SetNumberOfCodes(60000000);
         Generator->Generate();
 
     }

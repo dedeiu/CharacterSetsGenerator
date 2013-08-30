@@ -31,6 +31,7 @@ namespace NCSGenerator
         std::string FilePath = "";
         const int CharByteStringLength = 5;
         int NumberOfCodes = 100;
+        time_t Time;
     public:
         CSGenerator();
         ~CSGenerator();
@@ -39,6 +40,7 @@ namespace NCSGenerator
         void Generate();
         void SetFilePath(std::string FilePath);
         void SetNumberOfCodes(int NumberOfCodes);
+        std::string GetTime();
     };
 }
 #endif /* defined(__CharacterSetsGenerator__CSGenerator__) */

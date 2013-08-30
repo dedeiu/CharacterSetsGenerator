@@ -10,6 +10,7 @@
 #include "CSContainer.h"
 #include <sstream>
 #include <fstream>
+#include <ctime>
 
 namespace NCSGenerator
 {
@@ -37,15 +38,19 @@ namespace NCSGenerator
         std::string CharString(8, 'A');
         std::string ByteString(this->CharByteStringLength * 8, '0');
         std::string ByteChunk(8, '0');
+        std::ofstream OutputFile(this->FilePath, std::ios::app);
+        std::ostream_iterator<std::string> OutputIterator(OutputFile, "\n");
+        std::vector<std::string> container;
+        
+        OutputFile << "Started at: - " << this->GetTime();
+        
         unsigned long CharacterSetIndex = 0;
         
         for(int i = 0; i < this->NumberOfCodes; i++)
         {
             if(i % CSContainer::BUFFER == 0 && i > 0)
             {
-                std::ofstream OutputFile(this->FilePath, std::ios::app);
-                std::ostream_iterator<std::string> OutputIterator(OutputFile, "\n");
-                std::vector<std::string> container = this->CSContainer->GetContainer();
+                container = this->CSContainer->GetContainer();
                 std::copy(container.begin(), container.end(), OutputIterator);
                 this->CSContainer->Empty();
             }
@@ -68,6 +73,9 @@ namespace NCSGenerator
                 std::cout << i << std::endl;
             }
         }
+
+        OutputFile << "Finished at: - " << this->GetTime() << "\n";
+        OutputFile.close();
     }
     
     std::string CSGenerator::Dec2bin(unsigned long n)
@@ -99,5 +107,11 @@ namespace NCSGenerator
     void CSGenerator::SetNumberOfCodes(int NumberOfCodes)
     {
         this->NumberOfCodes = NumberOfCodes;
+    }
+    
+    std::string CSGenerator::GetTime()
+    {
+        time(&this->Time);
+        return ctime(&this->Time);
     }
 }
